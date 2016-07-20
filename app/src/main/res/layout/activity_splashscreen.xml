@@ -8,8 +8,25 @@
                                                     android:orientation="vertical" >
 
     <ImageView
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:id="@+id/splash"
+        android:background="@drawable/in_his_hands_logo" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/splash"
-        android:background="@drawable/logo" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text= "His Hands"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:id="@+id/textView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Day Care"
+        android:textColor="@color/white"
+        android:id="@+id/textView1"/>
 </LinearLayout>
