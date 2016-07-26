@@ -23,7 +23,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = LoginFragment.class.getSimpleName();
     private AppCompatButton btn_login;
-    private EditText et_email,et_password;
+    private EditText et_email, et_password;
     private TextView tv_register;
     private ProgressBar progress;
     private SharedPreferences pref;
@@ -37,11 +37,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    private void initViews(View view){
+    private void initViews(View view) {
 
         pref = getActivity().getPreferences(0);
 
-        btn_login = (AppCompatButton)view.findViewById(R.id.btn_login);
+        btn_login = (AppCompatButton) view.findViewById(R.id.btn_login);
         /*btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,10 +54,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
         });*/
         //tv_register = (TextView)view.findViewById(R.id.tv_register);
-        et_email = (EditText)view.findViewById(R.id.et_email);
-        et_password = (EditText)view.findViewById(R.id.et_password);
+        et_email = (EditText) view.findViewById(R.id.et_email);
+        et_password = (EditText) view.findViewById(R.id.et_password);
 
-        progress = (ProgressBar)view.findViewById(R.id.progress);
+        progress = (ProgressBar) view.findViewById(R.id.progress);
 
         btn_login.setOnClickListener(this);
     }
@@ -72,10 +72,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         /*BackgroundWorker backgroundWorker = new BackgroundWorker(getActivity());
         backgroundWorker.execute(type, username, password);*/
 
-        if(!username.isEmpty() && !password.isEmpty()) {
+        if (!username.isEmpty() && !password.isEmpty()) {
 
             progress.setVisibility(View.VISIBLE);
-            loginProcess(type, username,password);
+            loginProcess(type, username, password);
 
 
         } else {
@@ -90,9 +90,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResult(String result) {
                 Log.d(TAG, "onResult: " + result);
-                if(result.equals(Constants.SUCCESS)){
+                if (result.equals(Constants.SUCCESS)) {
                     SharedPreferences.Editor editor = pref.edit();
-                    editor.putBoolean(Constants.IS_LOGGED_IN,true);
+                    editor.putBoolean(Constants.IS_LOGGED_IN, true);
                     goToProfile();
                 }
             }
@@ -100,9 +100,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         backgroundworker.execute(type, username, password);
     }
 
-    private void goToProfile(){
+    private void goToProfile() {
 
-       Fragment landingPage = new LandingPageFragment();
+        Fragment landingPage = new HomescreenFragment();
+        //Fragment landingPage = new CustomerListFragment();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frame, landingPage);
         ft.commit();

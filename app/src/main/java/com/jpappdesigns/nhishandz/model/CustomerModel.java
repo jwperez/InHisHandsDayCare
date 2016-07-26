@@ -11,7 +11,7 @@ public class CustomerModel {
     private String middleName;
     private String email;
     private String phoneNumber;
-    private String relationshipToChilde;
+    private String relationshipToChild;
 
     public String getId() {
         return id;
@@ -61,11 +61,11 @@ public class CustomerModel {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getRelationshipToChilde() {
-        return relationshipToChilde;
+    public String getRelationshipToChild() {
+        return relationshipToChild;
     }
 
-    public void setRelationshipToChilde(String relationshipToChilde) {
-        this.relationshipToChilde = relationshipToChilde;
+    public void setRelationshipToChild(String relationshipToChild) {
+        this.relationshipToChild = relationshipToChild;
     }
 }

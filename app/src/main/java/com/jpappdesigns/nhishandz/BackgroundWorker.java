@@ -36,9 +36,10 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String type = params[0];
-        String login_url = Constants.LOGIN_URL;
+
         if (type.equals("login")) {
             try {
+                String login_url = Constants.LOGIN_URL;
                 String user_name = params[1];
                 String password = params[2];
                 URL url = new URL(login_url);
@@ -71,6 +72,7 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
         }
+
         return null;
     }
 
