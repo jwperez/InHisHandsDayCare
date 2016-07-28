@@ -35,15 +35,30 @@ public class ChildDetailAdapter extends RecyclerView.Adapter<ChildDetailAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
 
-        if (viewType == Constants.CHILD_INFO) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.child_info_card, parent, false);
-            return new ChildInfoHolder(view);
-        } else if (viewType == Constants.CHILD_SESSIONS) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.child_sessions_card, parent, false);
-            return new ChildSessionHolder(view);
+        switch (viewType) {
+            case Constants.CHILD_INFO:
+                view = LayoutInflater.from(mContext).inflate(R.layout.child_info_card, parent, false);
+                return new ChildInfoHolder(view);
+            case Constants.CHILD_SESSIONS:
+                view = LayoutInflater.from(mContext).inflate(R.layout.child_sessions_card, parent, false);
+                return new ChildSessionHolder(view);
+            case Constants.PARENT_GUARDIAN_OF_CHILD:
+                view = LayoutInflater.from(mContext).inflate(R.layout.customer_detail_card, parent, false);
+                return  new CustomerInfoHolder(view);
+            default:
+                throw new RuntimeException("viewType ERROR");
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        if (position < mChild.size()) {
+            return Constants.CHILD_INFO;
+        } else if (position < mChild.size() + 1) {
+            return Constants.CHILD_SESSIONS;
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.customer_detail_card, parent, false);
-            return  new CustomerInfoHolder(view);
+            return Constants.PARENT_GUARDIAN_OF_CHILD;
         }
     }
 
@@ -58,10 +73,10 @@ public class ChildDetailAdapter extends RecyclerView.Adapter<ChildDetailAdapter.
 
         } else {
             CustomerInfoHolder customerInfoHolder = (CustomerInfoHolder) holder;
-            customerInfoHolder.mRelationship.setText(mCustomer.get(position).getRelationshipToChild());
-            customerInfoHolder.mName.setText(mCustomer.get(position).getLastName());
-            customerInfoHolder.mPhoneNumber.setText(mCustomer.get(position).getPhoneNumber());
-            customerInfoHolder.mEmail.setText(mCustomer.get(position).getEmail());
+            customerInfoHolder.mRelationship.setText(mCustomer.get(position - 1).getRelationshipToChild());
+            customerInfoHolder.mName.setText(mCustomer.get(position - 1).getLastName());
+            customerInfoHolder.mPhoneNumber.setText(mCustomer.get(position - 1).getPhoneNumber());
+            customerInfoHolder.mEmail.setText(mCustomer.get(position - 1).getEmail());
         }
 
     }

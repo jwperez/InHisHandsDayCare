@@ -37,7 +37,7 @@ public class ChildListFragment extends Fragment{
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         getData();
-        getStartEndOFWeek(1, 2016);
+        //getStartEndOFWeek(1, 2016);
 
         return view;
     }

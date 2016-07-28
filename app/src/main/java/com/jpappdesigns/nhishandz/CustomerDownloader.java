@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.jpappdesigns.nhishandz.utils.Parser;
@@ -22,8 +23,9 @@ import java.net.URL;
  */
 public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
 
+    private static final String TAG = CustomerDownloader.class.getSimpleName();
     private Context mContext;
-    private String mUrlAddress = Constants.GET_CUSTOMERS_URL;
+    private String mUrlAddress;
     private ProgressDialog mProgressDialog;
     private RecyclerView mRecyclerView;
     private String mFragmentName;
@@ -50,9 +52,11 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
 
         String data = null;
 
+        Log.d(TAG, "doInBackground: " + mFragmentName);
+
         if (mFragmentName.equals("CustomerListFragment")) {
             data = this.downloadCustomers();
-        } else if (mFragmentName.equals("ChildListFragment")) {
+        } else {
             data = this.downloadChildren();
         }
 
@@ -70,10 +74,16 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
 
         mProgressDialog.dismiss();
 
+        Log.d(TAG, "onPostExecute: " + mFragmentName);
+
+        Log.d(TAG, "onPostExecute: " + data);
         if (data != null && mFragmentName.equals("CustomerListFragment")) {
             Parser parser = new Parser(mContext, data, mRecyclerView, "All Customers");
             parser.execute();
-        } else if (data != null && mFragmentName.equals("ChildListFragment")) {
+        }
+
+        if (mFragmentName.equals("ChildListFragment")) {
+            Log.d(TAG, "onPostExecute: inside ChildListFragment" + data);
             Parser parser = new Parser(mContext, data, mRecyclerView, "All Children");
             parser.execute();
         } else {
@@ -87,6 +97,7 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
         String line = null;
 
         try {
+            mUrlAddress = Constants.GET_CUSTOMERS_URL;
             URL url = new URL(mUrlAddress);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
@@ -122,6 +133,7 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
         String line = null;
 
         try {
+            mUrlAddress = Constants.GET_CHILDREN_URL;
             URL url = new URL(mUrlAddress);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             inputStream = new BufferedInputStream(httpURLConnection.getInputStream());

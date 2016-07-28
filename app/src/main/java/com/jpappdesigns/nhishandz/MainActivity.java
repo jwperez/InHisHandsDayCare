@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragement() {
         Fragment fragment;
-        if (pref.getBoolean(Constants.IS_LOGGED_IN, false)) {
+        if (pref.getBoolean(Constants.IS_LOGGED_IN, true)) {
             fragment = new HomescreenFragment();
             //fragment = new CustomerListFragment();
         } else {

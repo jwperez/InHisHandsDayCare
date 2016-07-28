@@ -12,32 +12,31 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jpappdesigns.nhishandz.Constants;
-import com.jpappdesigns.nhishandz.GetChildOfParentBackgroundWorker;
 import com.jpappdesigns.nhishandz.GetSingleCustomerBackgroundWorker;
 import com.jpappdesigns.nhishandz.R;
 
 /**
- * Created by jonathan.perez on 7/25/16.
+ * Created by jonathan.perez on 7/27/16.
  */
-public class CustomerDetailFragment extends Fragment {
+public class ChildDetailFragment extends Fragment {
 
-    private static final String TAG = CustomerDetailFragment.class.getSimpleName();
+    private static final String TAG = ChildDetailFragment.class.getSimpleName();
     RecyclerView mRecyclerView;
-    private String customerId;
+    private String mCustomerId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Bundle bundle = this.getArguments();
-        customerId = bundle.getString("customerId");
-        Log.d(TAG, "onCreateView: " + customerId);
+        mCustomerId = bundle.getString("customerId");
+        Log.d(TAG, "onCreateView: " + mCustomerId);
 
         View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
         initView(view);
 
-        getCustomerData(customerId, TAG);
-        getChildOfCustomerData(customerId);
+        getData(mCustomerId, TAG);
+
         return view;
     }
 
@@ -47,17 +46,10 @@ public class CustomerDetailFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
-
-    private void getCustomerData(String customerId, String sendingFragment) {
+    private void getData(String customerId, String sendingFragment) {
 
         GetSingleCustomerBackgroundWorker d = new GetSingleCustomerBackgroundWorker(getActivity(), Constants.RETRIEVE_SINGLE_CUSTOMER, Constants.RETRIEVE_SINGLE_CUSTOMER, mRecyclerView, customerId, sendingFragment);
         d.execute(customerId);
-
     }
 
-    private void getChildOfCustomerData(String customerId) {
-
-        GetChildOfParentBackgroundWorker getChildOfParentBackgroundWorker = new GetChildOfParentBackgroundWorker(getActivity(), Constants.RETRIVE_CHILD_OF_PARENT, mRecyclerView, customerId);
-        getChildOfParentBackgroundWorker.execute(customerId);
-    }
 }

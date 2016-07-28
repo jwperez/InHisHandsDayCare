@@ -10,6 +10,7 @@ public class ChildModel {
     private String firstName;
     private String middleName;
     private String dob;
+    private String customerId;
 
     public String getId() {
         return id;
@@ -49,5 +50,13 @@ public class ChildModel {
 
     public void setDob(String dob) {
         this.dob = dob;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }
