@@ -78,8 +78,8 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
             this.parseParentChild();
             return this.parseForSingleCustomer();
         } else if (mParsingFor.equals("Child Details")) {
-            this.parse();
-            return this.parseChildren();
+            this.parseForSingleCustomer();
+            return this.parseChildById();
         }
 
         return null;
@@ -198,6 +198,7 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 childModel.setFirstName(c.getString("firstName"));
                 childModel.setMiddleName(c.getString("middleName"));
                 childModel.setDob(c.getString("dob"));
+                childModel.setCustomerId(c.getString("customerId"));
                 child.add(childModel);
             }
             return 1;
@@ -225,6 +226,35 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 childModel.setFirstName(c.getString("firstName"));
                 childModel.setMiddleName(c.getString("middleName"));
                 childModel.setDob(c.getString("dob"));
+                child.add(childModel);
+            }
+
+            return 1;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private int parseChildById() {
+
+        try {
+            JSONArray children = null;
+            JSONObject jsonObject = new JSONObject(data2);
+            children = jsonObject.getJSONArray("child");
+
+            child.clear();
+
+            for (int i = 0; i < children.length(); i++) {
+                JSONObject c = children.getJSONObject(i);
+                ChildModel childModel = new ChildModel();
+                childModel.setId(c.getString("childId"));
+                childModel.setLastName(c.getString("lastName"));
+                childModel.setFirstName(c.getString("firstName"));
+                childModel.setMiddleName(c.getString("middleName"));
+                childModel.setDob(c.getString("dob"));
+                childModel.setCustomerId(c.getString("customerId"));
                 child.add(childModel);
             }
 

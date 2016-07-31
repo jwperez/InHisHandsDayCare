@@ -21,8 +21,9 @@ import com.jpappdesigns.nhishandz.R;
 public class ChildDetailFragment extends Fragment {
 
     private static final String TAG = ChildDetailFragment.class.getSimpleName();
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private String mCustomerId;
+    private String mChildId;
 
     @Nullable
     @Override
@@ -30,12 +31,13 @@ public class ChildDetailFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         mCustomerId = bundle.getString("customerId");
+        mChildId = bundle.getString("childId");
         Log.d(TAG, "onCreateView: " + mCustomerId);
 
         View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
         initView(view);
 
-        getData(mCustomerId, TAG);
+        getData(mCustomerId, mChildId, TAG);
 
         return view;
     }
@@ -46,9 +48,9 @@ public class ChildDetailFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
-    private void getData(String customerId, String sendingFragment) {
+    private void getData(String customerId, String childId, String sendingFragment) {
 
-        GetSingleCustomerBackgroundWorker d = new GetSingleCustomerBackgroundWorker(getActivity(), Constants.RETRIEVE_SINGLE_CUSTOMER, Constants.RETRIEVE_SINGLE_CUSTOMER, mRecyclerView, customerId, sendingFragment);
+        GetSingleCustomerBackgroundWorker d = new GetSingleCustomerBackgroundWorker(getActivity(), Constants.RETRIEVE_SINGLE_CUSTOMER, Constants.RETRIEVE_CHILD_BY_ID, mRecyclerView, customerId, childId, sendingFragment);
         d.execute(customerId);
     }
 

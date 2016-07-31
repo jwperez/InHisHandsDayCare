@@ -41,7 +41,7 @@
         <EditText
             android:hint="Password"
             android:id="@+id/et_password"
-            android:drawableRight="@drawable/ic_key"
+            android:drawableRight="@drawable/ic_phone"
             android:drawableTint="@color/colorAccent"
             android:inputType="textPassword"
             android:layout_width="match_parent"

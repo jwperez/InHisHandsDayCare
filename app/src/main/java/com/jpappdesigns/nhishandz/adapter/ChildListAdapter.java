@@ -60,7 +60,10 @@ public class ChildListAdapter extends RecyclerView.Adapter<MyHolder> {
 
                 Fragment fragment = new ChildDetailFragment();
                 Bundle args = new Bundle();
+                args.putString("childId", mChild.get(position).getId());
                 args.putString("customerId", mChild.get(position).getCustomerId());
+                Log.d(TAG, "onItemClick: childID " + mChild.get(position).getCustomerId());
+                Log.d(TAG, "onItemClick: customerId" + mChild.get(position).getCustomerId());
                 fragment.setArguments(args);
                 FragmentTransaction ft = ((MainActivity) mContext).getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_frame, fragment);
@@ -73,7 +76,6 @@ public class ChildListAdapter extends RecyclerView.Adapter<MyHolder> {
 
     @Override
     public int getItemCount() {
-        Log.d(TAG, "getItemCount: child size" +mChild.size());
         return mChild.size();
     }
 }
