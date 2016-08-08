@@ -19,6 +19,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  * Created by jonathan.perez on 7/25/16.
@@ -34,6 +37,8 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
     private String mCustomerId;
     private String mSendingFragment;
     private String mChildId;
+    private Calendar mCurrentDate;
+
 
     public GetSingleCustomerBackgroundWorker(Context context, String urlAddress, String childOfCustomer, RecyclerView recyclerView, String customerId, String sendingFragment) {
         mContext = context;
@@ -44,7 +49,7 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
         mSendingFragment = sendingFragment;
     }
 
-    public GetSingleCustomerBackgroundWorker(Context context, String urlAddress, String childOfCustomer, RecyclerView recyclerView, String customerId, String childId, String sendingFragment) {
+    public GetSingleCustomerBackgroundWorker(Context context, String urlAddress, String childOfCustomer, RecyclerView recyclerView, String customerId, String childId, String sendingFragment, Calendar currentDate) {
         mContext = context;
         mUrlAddress = urlAddress;
         mChildOfCustomer = childOfCustomer;
@@ -52,6 +57,7 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
         mCustomerId = customerId;
         mChildId = childId;
         mSendingFragment = sendingFragment;
+        mCurrentDate = currentDate;
     }
 
     @Override
@@ -70,8 +76,7 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
 
         String customerData;
         String childOfCustomerData;
-
-        Log.d(TAG, "doInBackground: " + params[0]);
+        String childSessionsData;
 
         if (mSendingFragment.equals("CustomerDetailFragment")) {
             customerData = this.downloadSingleCustomerData(mCustomerId);
@@ -79,25 +84,32 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
 
             Family f = new Family();
             f.customerData = customerData;
-            f.childofCustomerData = childOfCustomerData;
-            Log.d(TAG, "doInBackground: " + f.customerData);
-            Log.d(TAG, "doInBackground: " + f.childofCustomerData);
+            f.childOfCustomerData = childOfCustomerData;
 
             return f;
         } else {
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+            String[] days = new String[5];
+            int delta = mCurrentDate.get(GregorianCalendar.DAY_OF_WEEK) + 3; //add 2 if your week start on monday
+            mCurrentDate.add(Calendar.DAY_OF_MONTH, delta);
+            for (int i = 0; i < 5; i++) {
+                days[i] = format.format(mCurrentDate.getTime());
+                mCurrentDate.add(Calendar.DAY_OF_MONTH, 1);
+            }
+
             customerData = this.downloadSingleCustomerData(mCustomerId);
             childOfCustomerData = this.downloadChildById(mChildId);
+            childSessionsData = this.childSessions(mChildId, days[0], days[4]);
 
             Family f = new Family();
             f.customerData = customerData;
-            f.childofCustomerData = childOfCustomerData;
-            Log.d(TAG, "doInBackground: " + f.customerData);
-            Log.d(TAG, "doInBackground: " + f.childofCustomerData);
+            f.childOfCustomerData = childOfCustomerData;
+            f.childSessionsData = childSessionsData;
 
             return f;
         }
-
-
     }
 
     @Override
@@ -106,18 +118,16 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
 
         mProgressDialog.dismiss();
 
-        Log.d(TAG, "onPostExecute: " + mSendingFragment);
-
         if (mSendingFragment.equals("ChildDetailFragment")) {
-            Parser customerParser = new Parser(mContext, f.customerData, f.childofCustomerData, mRecyclerView, "Child Details");
+            Parser customerParser = new Parser(mContext, f.customerData, f.childOfCustomerData, f.childSessionsData, mRecyclerView, "Child Details");
+            Log.d(TAG, "onPostExecute: " + f.childSessionsData);
             customerParser.execute();
         } else if (mSendingFragment.equals("CustomerDetailFragment")) {
             if (f.customerData != null) {
-                Parser customerParser = new Parser(mContext, f.customerData, f.childofCustomerData, mRecyclerView, "Single Customer");
+                Parser customerParser = new Parser(mContext, f.customerData, f.childOfCustomerData, mRecyclerView, "Single Customer");
                 customerParser.execute();
             }
         }
-
     }
 
     private String downloadSingleCustomerData(String customerId) {
@@ -231,9 +241,55 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
         return null;
     }
 
+    private String childSessions(String childId, String date1, String date5) {
+
+        InputStream inputStream = null;
+        String line = null;
+
+        try {
+            String login_url = Constants.RETRIEVE_CHILD_SESSION_FOR_WEEK;
+            URL url = new URL(login_url);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod(Constants.REQUEST_METHOD);
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setDoInput(true);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+            String post_data = URLEncoder.encode("childId", "UTF-8") + "=" + URLEncoder.encode(childId, "UTF-8") + "&"+
+                    URLEncoder.encode("date1", "UTF-8") + "=" + URLEncoder.encode(date1, "UTF-8") + "&" +
+                    URLEncoder.encode("date5", "UTF-8") + "=" + URLEncoder.encode(date5, "UTF-8");
+            bufferedWriter.write(post_data);
+
+            Log.d(TAG, "childSessions: " + post_data);
+            bufferedWriter.flush();
+            bufferedWriter.close();
+            outputStream.close();
+            inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"));
+
+
+            String result = "";
+            while ((line = bufferedReader.readLine()) != null) {
+                result += line;
+            }
+            bufferedReader.close();
+            //result += System.getProperty("line.separator") + responseOutput.toString();
+
+            inputStream.close();
+            httpURLConnection.disconnect();
+            return result;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public class Family {
 
         public String customerData;
-        public String childofCustomerData;
+        public String childOfCustomerData;
+        public String childSessionsData;
     }
 }

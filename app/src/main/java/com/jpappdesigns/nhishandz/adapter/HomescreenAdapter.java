@@ -1,6 +1,7 @@
 package com.jpappdesigns.nhishandz.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.jpappdesigns.nhishandz.ItemClickListener;
 import com.jpappdesigns.nhishandz.MainActivity;
+import com.jpappdesigns.nhishandz.MonthlyReportsActivity;
 import com.jpappdesigns.nhishandz.MyViewHolder;
 import com.jpappdesigns.nhishandz.R;
 import com.jpappdesigns.nhishandz.fragments.ChildListFragment;
@@ -68,9 +70,10 @@ public class HomescreenAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 } else if (position == 2) {
                     Toast.makeText(mContext, "Position " + position, Toast.LENGTH_SHORT).show();
                 } else if (position == 3) {
-                    Toast.makeText(mContext, "Position " + position, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Position  " + position, Toast.LENGTH_SHORT).show();
                 } else if (position == 4) {
-                    Toast.makeText(mContext, "Position " + position, Toast.LENGTH_SHORT).show();
+                    Intent reportsActivity = new Intent(mContext, MonthlyReportsActivity.class);
+                    mContext.startActivity(reportsActivity);
                 }
             }
         });

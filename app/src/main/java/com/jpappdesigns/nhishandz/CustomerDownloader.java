@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.jpappdesigns.nhishandz.utils.Parser;
@@ -28,12 +29,20 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
     private String mUrlAddress;
     private ProgressDialog mProgressDialog;
     private RecyclerView mRecyclerView;
+    private Spinner mChildrenSpinner;
     private String mFragmentName;
 
     public CustomerDownloader(Context context, String urlAddress, RecyclerView recyclerView, String fragmentName) {
         mContext = context;
         mUrlAddress = urlAddress;
         mRecyclerView = recyclerView;
+        mFragmentName = fragmentName;
+    }
+
+    public CustomerDownloader(Context context, String urlAddress, Spinner spinner, String fragmentName) {
+        mContext = context;
+        mUrlAddress = urlAddress;
+        mChildrenSpinner = spinner;
         mFragmentName = fragmentName;
     }
 
@@ -74,17 +83,20 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
 
         mProgressDialog.dismiss();
 
-        Log.d(TAG, "onPostExecute: " + mFragmentName);
+        //Log.d(TAG, "onPostExecute: " + mFragmentName);
 
-        Log.d(TAG, "onPostExecute: " + data);
+        //Log.d(TAG, "onPostExecute: " + data);
         if (data != null && mFragmentName.equals("CustomerListFragment")) {
             Parser parser = new Parser(mContext, data, mRecyclerView, "All Customers");
             parser.execute();
         }
 
         if (mFragmentName.equals("ChildListFragment")) {
-            Log.d(TAG, "onPostExecute: inside ChildListFragment" + data);
+            //Log.d(TAG, "onPostExecute: inside ChildListFragment" + data);
             Parser parser = new Parser(mContext, data, mRecyclerView, "All Children");
+            parser.execute();
+        } else if (mFragmentName.equals("MonthlyReportsFragment")) {
+            Parser parser = new Parser(mContext, data, mChildrenSpinner, "MonthlyReportsFragment");
             parser.execute();
         } else {
             Toast.makeText(mContext, "Unable to download customer data", Toast.LENGTH_SHORT).show();

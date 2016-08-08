@@ -37,7 +37,7 @@ public class CustomerDetailFragment extends Fragment {
         initView(view);
 
         getCustomerData(customerId, TAG);
-        getChildOfCustomerData(customerId);
+        //getChildOfCustomerData(customerId);
         return view;
     }
 

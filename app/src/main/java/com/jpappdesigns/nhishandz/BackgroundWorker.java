@@ -3,6 +3,7 @@ package com.jpappdesigns.nhishandz;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.jpappdesigns.nhishandz.utils.AsyncStringResult;
 
@@ -20,6 +21,7 @@ import java.net.URLEncoder;
 
 public class BackgroundWorker extends AsyncTask<String, Void, String> {
 
+    private static final String TAG = BackgroundWorker.class.getSimpleName();
     Context mContext;
     AlertDialog mAlertDialog;
     AsyncStringResult mcallback;
@@ -51,6 +53,7 @@ public class BackgroundWorker extends AsyncTask<String, Void, String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
                 String post_data = URLEncoder.encode("user_name", "UTF-8") + "=" + URLEncoder.encode(user_name, "UTF-8") + "&"
                         + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                Log.d(TAG, "doInBackground: " + post_data);
                 bufferedWriter.write(post_data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.jpappdesigns.nhishandz.adapter.ChildDetailAdapter;
@@ -12,6 +14,7 @@ import com.jpappdesigns.nhishandz.adapter.ChildListAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerDetailAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerListAdapter;
 import com.jpappdesigns.nhishandz.model.ChildModel;
+import com.jpappdesigns.nhishandz.model.ChildSessionModel;
 import com.jpappdesigns.nhishandz.model.CustomerModel;
 
 import org.json.JSONArray;
@@ -19,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jonathan.perez on 7/20/16.
@@ -29,10 +33,13 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
     private Context mContext;
     private String data;
     private String data2;
+    private String data3;
     private ProgressDialog mProgressDialog;
     private ArrayList<CustomerModel> customers = new ArrayList<>();
     private ArrayList<ChildModel> child = new ArrayList<>();
+    private ArrayList<ChildSessionModel> mChildSessionModels= new ArrayList<>();
     private RecyclerView mRecyclerView;
+    private Spinner mChildrenSpinner;
     CustomerListAdapter mCustomerListAdapter;
     ChildDetailAdapter mChildDetailAdapter;
     ChildListAdapter mChildListAdapter;
@@ -48,10 +55,29 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
         mParsingFor = parsingFor;
     }
 
+    public Parser(Context context, String data, Spinner spinner, String parsingFor) {
+        mContext = context;
+        this.data = data;
+        mChildrenSpinner = spinner;
+        mParsingFor = parsingFor;
+    }
+
     public Parser(Context context, String data, String data2, RecyclerView recyclerView, String parsingFor) {
         mContext = context;
         this.data = data;
         this.data2 = data2;
+        mRecyclerView = recyclerView;
+        mParsingFor = parsingFor;
+    }
+
+    public Parser(Context context, String data, String data2, String data3, RecyclerView recyclerView, String parsingFor) {
+        mContext = context;
+        this.data = data;
+        this.data2 = data2;
+        this.data3 = data3;
+        Log.d(TAG, "Parser: " + data);
+        Log.d(TAG, "Parser: " + data2);
+        Log.d(TAG, "Parser: " + data3);
         mRecyclerView = recyclerView;
         mParsingFor = parsingFor;
     }
@@ -69,7 +95,7 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
     @Override
     protected Integer doInBackground(Void... voids) {
 
-        Log.d(TAG, "doInBackground: " + mParsingFor);
+        //Log.d(TAG, "doInBackground: " + mParsingFor);
         if (mParsingFor.equals("All Customers")) {
             return this.parse();
         } else if (mParsingFor.equals("All Children")) {
@@ -79,9 +105,10 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
             return this.parseForSingleCustomer();
         } else if (mParsingFor.equals("Child Details")) {
             this.parseForSingleCustomer();
+            this.parseChildSessions();
             return this.parseChildById();
-        }
-
+        } else if (mParsingFor.equals("MonthlyReportsFragment"))
+            return this.parseChildren();
         return null;
     }
 
@@ -91,7 +118,7 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
 
         mProgressDialog.dismiss();
 
-        Log.d(TAG, "onPostExecute: " +mParsingFor);
+        //Log.d(TAG, "onPostExecute: " +mParsingFor);
 
         if (mParsingFor.equals("Single Customer")) {
             if (integer == 1) {
@@ -114,8 +141,34 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 mRecyclerView.setAdapter(mChildListAdapter);
             }
         } else if (mParsingFor.equals("Child Details")) {
-            mChildDetailAdapter = new ChildDetailAdapter(mContext, customers, child);
+            mChildDetailAdapter = new ChildDetailAdapter(mContext, customers, child, mChildSessionModels);
             mRecyclerView.setAdapter(mChildDetailAdapter);
+        } else if (mParsingFor.equals("MonthlyReportsFragment")) {
+            List<String> labels = new ArrayList<>();
+
+            for (int i = 0; i < child.size(); i++) {
+
+                StringBuilder buf = new StringBuilder();
+                buf.append(child.get(i).getLastName());
+                buf.append(", " + child.get(i).getFirstName());
+                if (!"".equals(child.get(i).getMiddleName())) {
+                    buf.append(" ");
+                    buf.append(child.get(i).getMiddleName());
+                } else {
+                }
+
+                labels.add(buf.toString());
+            }
+            // Creating adapter for spinner
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
+                    android.R.layout.simple_spinner_item, labels);
+
+            // Drop down layout style - list view with radio button
+            spinnerAdapter
+                    .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+            // attaching data adapter to spinner
+            mChildrenSpinner.setAdapter(spinnerAdapter);
         }
     }
 
@@ -260,6 +313,33 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
 
             return 1;
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private int parseChildSessions() {
+
+        try {
+            JSONArray childSession;
+            JSONObject jsonObject = new JSONObject(data3);
+            childSession = jsonObject.getJSONArray("child_sessions");
+
+            mChildSessionModels.clear();
+
+            for (int i = 0; i < childSession.length(); i++) {
+                JSONObject c = childSession.getJSONObject(i);
+                ChildSessionModel childSessionModel = new ChildSessionModel();
+                childSessionModel.setDate(c.getString("date"));
+                childSessionModel.setTimeIn(c.getString("timeIn"));
+                childSessionModel.setTimeOut(c.getString("timeOut"));
+                childSessionModel.setDuration(c.getString("duration"));
+                childSessionModel.setChildId(c.getString("childId"));
+                childSessionModel.setSessionCost(c.getString("sessionCost"));
+                mChildSessionModels.add(childSessionModel);
+            }
+            return 1;
         } catch (JSONException e) {
             e.printStackTrace();
         }
