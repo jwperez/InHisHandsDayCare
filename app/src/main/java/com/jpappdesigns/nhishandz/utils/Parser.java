@@ -142,8 +142,9 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
             mChildDetailAdapter = new ChildDetailAdapter(mContext, customers, child, mChildSessionModels);
             mRecyclerView.setAdapter(mChildDetailAdapter);
         } else if (mParsingFor.equals("MonthlyReportsFragment")) {
-            String[] labels = new String[0];
-            String[] childId = new String[0];
+            String[] labels = new String[child.size()];
+            String[] childId = new String[child.size()];
+            Log.d(TAG, "onPostExecute: " + child.size());
 
             for (int i = 0; i < child.size(); i++) {
 
@@ -159,6 +160,9 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 childId[i] = child.get(i).getId();
 
                 labels[i] =buf.toString();
+
+                Log.d(TAG, "onPostExecute: " + labels[i]);
+                Log.d(TAG, "onPostExecute: " + childId[i]);
             }
             // Creating adapter for spinner
             //ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
@@ -168,8 +172,8 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
 
 
             // Drop down layout style - list view with radio button
-            spinnerAdapter
-                    .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            //spinnerAdapter
+              //      .setDropDownViewResource(R.layout.spinner_item);
 
             // attaching data adapter to spinner
             mChildrenSpinner.setAdapter(spinnerAdapter);

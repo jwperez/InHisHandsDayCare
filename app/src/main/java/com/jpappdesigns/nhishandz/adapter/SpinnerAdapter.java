@@ -2,6 +2,7 @@ package com.jpappdesigns.nhishandz.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.jpappdesigns.nhishandz.R;
  */
 public class SpinnerAdapter extends ArrayAdapter<String> {
 
+    private static final String TAG = SpinnerAdapter.class.getSimpleName();
     private Context mContext;
     private String[] children;
     private String[] childrenId;
@@ -23,7 +25,9 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
         super(context, R.layout.spinner_item);
         mContext = context;
         this.children = children;
+        Log.d(TAG, "SpinnerAdapter: " + children);
         this.childrenId = childrenId;
+        Log.d(TAG, "SpinnerAdapter: " + childrenId);
     }
 
     @Override
