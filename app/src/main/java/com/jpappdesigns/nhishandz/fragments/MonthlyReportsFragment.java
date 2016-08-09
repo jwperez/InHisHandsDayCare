@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,9 @@ import android.widget.Spinner;
 import com.jpappdesigns.nhishandz.Constants;
 import com.jpappdesigns.nhishandz.CustomerDownloader;
 import com.jpappdesigns.nhishandz.R;
-import com.jpappdesigns.nhishandz.model.ChildModel;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -104,14 +102,19 @@ public class MonthlyReportsFragment extends Fragment {
             }
         });
 
-        populateSpinner(mChildrenSpinner);
+        populateSpinner();
 
         mGenerateBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                Log.d(TAG, "onClick: " + mStartDate.getText());
+                Log.d(TAG, "onClick: " + mEndDate.getText());
+                Log.d(TAG, "onClick: " + mChildrenSpinner.getSelectedItemPosition());
+                Log.d(TAG, "onClick: " + mChildrenSpinner.getSelectedItemPosition());
+
                 Fragment fragment;
-                fragment = new MonthlyReportsFragment();
+                fragment = new MonthlyReportsPrintoutFragment();
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_report_printout, fragment);
@@ -120,9 +123,7 @@ public class MonthlyReportsFragment extends Fragment {
         });
     }
 
-    private void populateSpinner(Spinner spinner) {
-
-        List<ChildModel> children = new ArrayList<>();
+    private void populateSpinner() {
 
         CustomerDownloader d = new CustomerDownloader(getActivity(), Constants.GET_CHILDREN_URL, mChildrenSpinner, TAG);
         d.execute();

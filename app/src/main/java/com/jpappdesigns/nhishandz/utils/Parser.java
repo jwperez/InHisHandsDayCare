@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -13,6 +12,7 @@ import com.jpappdesigns.nhishandz.adapter.ChildDetailAdapter;
 import com.jpappdesigns.nhishandz.adapter.ChildListAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerDetailAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerListAdapter;
+import com.jpappdesigns.nhishandz.adapter.SpinnerAdapter;
 import com.jpappdesigns.nhishandz.model.ChildModel;
 import com.jpappdesigns.nhishandz.model.ChildSessionModel;
 import com.jpappdesigns.nhishandz.model.CustomerModel;
@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by jonathan.perez on 7/20/16.
@@ -44,7 +43,6 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
     ChildDetailAdapter mChildDetailAdapter;
     ChildListAdapter mChildListAdapter;
     CustomerDetailAdapter mCustomerDetailAdapter;
-
 
     private String mParsingFor;
 
@@ -144,7 +142,8 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
             mChildDetailAdapter = new ChildDetailAdapter(mContext, customers, child, mChildSessionModels);
             mRecyclerView.setAdapter(mChildDetailAdapter);
         } else if (mParsingFor.equals("MonthlyReportsFragment")) {
-            List<String> labels = new ArrayList<>();
+            String[] labels = new String[0];
+            String[] childId = new String[0];
 
             for (int i = 0; i < child.size(); i++) {
 
@@ -157,11 +156,16 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 } else {
                 }
 
-                labels.add(buf.toString());
+                childId[i] = child.get(i).getId();
+
+                labels[i] =buf.toString();
             }
             // Creating adapter for spinner
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
-                    android.R.layout.simple_spinner_item, labels);
+            //ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
+              //      android.R.layout.simple_spinner_item, labels);
+
+            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(mContext, labels, childId);
+
 
             // Drop down layout style - list view with radio button
             spinnerAdapter
