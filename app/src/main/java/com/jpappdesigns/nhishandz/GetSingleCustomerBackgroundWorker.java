@@ -38,6 +38,8 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
     private String mSendingFragment;
     private String mChildId;
     private Calendar mCurrentDate;
+    private String mStartDate;
+    private String mEndDate;
 
 
     public GetSingleCustomerBackgroundWorker(Context context, String urlAddress, String childOfCustomer, RecyclerView recyclerView, String customerId, String sendingFragment) {
@@ -60,6 +62,19 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
         mCurrentDate = currentDate;
     }
 
+    public GetSingleCustomerBackgroundWorker(Context context, String urlAddress, String childOfCustomer, RecyclerView recyclerView, String customerId, String childId, String sendingFragment, String startDate, String endDate) {
+        mContext = context;
+        mUrlAddress = urlAddress;
+        mChildOfCustomer = childOfCustomer;
+        mRecyclerView = recyclerView;
+        mCustomerId = customerId;
+        Log.d(TAG, "GetSingleCustomerBackgroundWorker: " + mCustomerId);
+        mChildId = childId;
+        mSendingFragment = sendingFragment;
+        mStartDate = startDate;
+        mEndDate = endDate;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -78,6 +93,7 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
         String childOfCustomerData;
         String childSessionsData;
 
+
         if (mSendingFragment.equals("CustomerDetailFragment")) {
             customerData = this.downloadSingleCustomerData(mCustomerId);
             childOfCustomerData = this.downloadChildOfSingleCustomerData(mCustomerId);
@@ -87,6 +103,26 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
             f.childOfCustomerData = childOfCustomerData;
 
             return f;
+        } else if (mSendingFragment.equals("MonthlyReportsPrintoutFragment")) {
+
+            //mCustomerId = params[0];
+            //mChildId = params[1];
+
+            Log.d(TAG, "doInBackground: CustomerId" + mCustomerId);
+            customerData = this.downloadSingleCustomerData(mCustomerId);
+            childOfCustomerData = this.downloadChildById(mChildId);
+
+            Log.d(TAG, "doInBackground: " + mStartDate);
+            Log.d(TAG, "doInBackground: " + mEndDate);
+            childSessionsData = this.childSessions(mChildId, mStartDate, mEndDate);
+
+            Family f = new Family();
+            f.customerData = customerData;
+            f.childOfCustomerData = childOfCustomerData;
+            f.childSessionsData = childSessionsData;
+
+            return f;
+
         } else {
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -127,6 +163,10 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
                 Parser customerParser = new Parser(mContext, f.customerData, f.childOfCustomerData, mRecyclerView, "Single Customer");
                 customerParser.execute();
             }
+        } else if (mSendingFragment.equals("MonthlyReportsPrintoutFragment")) {
+            Parser customerParser = new Parser(mContext, f.customerData, f.childOfCustomerData, f.childSessionsData, mRecyclerView, "MonthlyReportsPrintoutFragment");
+            Log.d(TAG, "onPostExecute: " + f.childSessionsData);
+            customerParser.execute();
         }
     }
 
@@ -277,6 +317,7 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
 
             inputStream.close();
             httpURLConnection.disconnect();
+            Log.d(TAG, "childSessions: " + result.toString());
             return result;
         } catch (MalformedURLException e) {
             e.printStackTrace();

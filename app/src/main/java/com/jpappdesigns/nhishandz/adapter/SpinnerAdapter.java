@@ -2,7 +2,6 @@ package com.jpappdesigns.nhishandz.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,21 +17,20 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
 
     private static final String TAG = SpinnerAdapter.class.getSimpleName();
     private Context mContext;
-    private String[] children;
-    private String[] childrenId;
+    private String[] mChildren;
+    private String[] mChildrenId;
+    private String[] mCustomerId;
 
-    public SpinnerAdapter(Context context, String[] children, String[] childrenId) {
-        super(context, R.layout.spinner_item);
+    public SpinnerAdapter(Context context, String[] children, String[] childrenId, String[] cusotmerId) {
+        super(context, R.layout.spinner_item,children);
         mContext = context;
-        this.children = children;
-        Log.d(TAG, "SpinnerAdapter: " + children);
-        this.childrenId = childrenId;
-        Log.d(TAG, "SpinnerAdapter: " + childrenId);
+        this.mChildren = children;
+        this.mChildrenId = childrenId;
+        mCustomerId = cusotmerId;
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-
         return initView(position, convertView);
     }
 
@@ -49,11 +47,13 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
         }
 
         TextView childName = (TextView) convertView.findViewById(R.id.tvChildName);
-        TextView childId = (TextView) convertView.findViewById(R.id.tvCHildID);
+        TextView childId = (TextView) convertView.findViewById(R.id.tvChildID);
+        TextView customerId = (TextView) convertView.findViewById(R.id.tvCustomerId);
 
 
-        childId.setText(childrenId[position]);
-        childName.setText(children[position]);
+        childId.setText(mChildrenId[position]);
+        childName.setText(mChildren[position]);
+        customerId.setText(mCustomerId[position]);
         return convertView;
     }
 }

@@ -37,6 +37,7 @@ public class ChildDetailAdapter extends RecyclerView.Adapter<ChildDetailAdapter.
         mCustomer = customer;
         mChild = child;
         mChildSessions = childSessions;
+        Log.d(TAG, "ChildDetailAdapter: " + mChildSessions.size());
     }
 
     @Override

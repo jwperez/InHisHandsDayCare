@@ -17,12 +17,25 @@
         android:textColor="#212121"/>
 
     <TextView
-        android:id="@+id/tvCHildID"
+        android:id="@+id/tvChildID"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
-        android:layout_weight=".2"
+        android:layout_weight=".1"
         android:gravity="center_vertical|center_horizontal"
+        android:visibility="invisible"
+        android:text="4"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#212121"/>
+
+    <TextView
+        android:id="@+id/tvCustomerId"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight=".1"
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="visible"
         android:text="4"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="#212121"/>

@@ -8,10 +8,12 @@ import android.util.Log;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.jpappdesigns.nhishandz.R;
 import com.jpappdesigns.nhishandz.adapter.ChildDetailAdapter;
 import com.jpappdesigns.nhishandz.adapter.ChildListAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerDetailAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerListAdapter;
+import com.jpappdesigns.nhishandz.adapter.ReportsAdapter;
 import com.jpappdesigns.nhishandz.adapter.SpinnerAdapter;
 import com.jpappdesigns.nhishandz.model.ChildModel;
 import com.jpappdesigns.nhishandz.model.ChildSessionModel;
@@ -43,6 +45,7 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
     ChildDetailAdapter mChildDetailAdapter;
     ChildListAdapter mChildListAdapter;
     CustomerDetailAdapter mCustomerDetailAdapter;
+    ReportsAdapter mReportsAdapter;
 
     private String mParsingFor;
 
@@ -105,8 +108,14 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
             this.parseForSingleCustomer();
             this.parseChildSessions();
             return this.parseChildById();
-        } else if (mParsingFor.equals("MonthlyReportsFragment"))
+        } else if (mParsingFor.equals("MonthlyReportsFragment")) {
             return this.parseChildren();
+        } else if (mParsingFor.equals("MonthlyReportsPrintoutFragment")) {
+            this.parseForSingleCustomer();
+            this.parseChildSessions();
+            return this.parseChildById();
+        }
+
         return null;
     }
 
@@ -144,7 +153,7 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
         } else if (mParsingFor.equals("MonthlyReportsFragment")) {
             String[] labels = new String[child.size()];
             String[] childId = new String[child.size()];
-            Log.d(TAG, "onPostExecute: " + child.size());
+            String[] customerId = new String[child.size()];
 
             for (int i = 0; i < child.size(); i++) {
 
@@ -157,26 +166,28 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 } else {
                 }
 
-                childId[i] = child.get(i).getId();
-
                 labels[i] =buf.toString();
+                childId[i] = child.get(i).getId();
+                customerId[i] = child.get(i).getCustomerId();
+                Log.d(TAG, "onPostExecute: " + customerId[i]);
 
-                Log.d(TAG, "onPostExecute: " + labels[i]);
-                Log.d(TAG, "onPostExecute: " + childId[i]);
             }
             // Creating adapter for spinner
             //ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
               //      android.R.layout.simple_spinner_item, labels);
 
-            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(mContext, labels, childId);
+            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(mContext, labels, childId, customerId);
 
 
             // Drop down layout style - list view with radio button
-            //spinnerAdapter
-              //      .setDropDownViewResource(R.layout.spinner_item);
+            spinnerAdapter
+                    .setDropDownViewResource(R.layout.spinner_item);
 
             // attaching data adapter to spinner
             mChildrenSpinner.setAdapter(spinnerAdapter);
+        }  else if (mParsingFor.equals("MonthlyReportsPrintoutFragment")) {
+            mReportsAdapter = new ReportsAdapter(mContext, customers, child, mChildSessionModels);
+            mRecyclerView.setAdapter(mReportsAdapter);
         }
     }
 

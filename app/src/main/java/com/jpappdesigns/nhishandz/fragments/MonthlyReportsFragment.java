@@ -6,14 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.jpappdesigns.nhishandz.Constants;
 import com.jpappdesigns.nhishandz.CustomerDownloader;
@@ -33,6 +34,8 @@ public class MonthlyReportsFragment extends Fragment {
     private EditText mEndDate;
     private Button mGenerateBill;
     private SimpleDateFormat mDateFormatter;
+    private String mChildId;
+    private String mCustomerId;
 
     private Spinner mChildrenSpinner;
 
@@ -104,19 +107,40 @@ public class MonthlyReportsFragment extends Fragment {
 
         populateSpinner();
 
+        mChildrenSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ViewGroup vg = (ViewGroup) view;
+                vg.getChildCount();
+
+                TextView childId = (TextView) vg.getChildAt(1);
+                TextView customerId = (TextView) vg.getChildAt(2);
+
+                mChildId = childId.getText().toString();
+                mCustomerId = customerId.getText().toString();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         mGenerateBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Log.d(TAG, "onClick: " + mStartDate.getText());
-                Log.d(TAG, "onClick: " + mEndDate.getText());
-                Log.d(TAG, "onClick: " + mChildrenSpinner.getSelectedItemPosition());
-                Log.d(TAG, "onClick: " + mChildrenSpinner.getSelectedItemPosition());
 
                 Fragment fragment;
                 fragment = new MonthlyReportsPrintoutFragment();
 
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
+                Bundle args = new Bundle();
+                args.putString("ChildId", mChildId);
+                args.putString("CustomerId", mCustomerId);
+                args.putString("StartDate", String.valueOf(mStartDate.getText()));
+                args.putString("EndDate", String.valueOf(mEndDate.getText()));
+                fragment.setArguments(args);
                 ft.replace(R.id.fragment_report_printout, fragment);
                 ft.commit();
             }
