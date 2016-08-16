@@ -1,128 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/mCard"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="4dp"
-    android:layout_gravity="center_vertical">
+                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                    android:id="@+id/mCard"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_margin="5dp"
+                                    card_view:cardCornerRadius="8dp"
+                                    card_view:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical">
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tvCustoemrNameHeading"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight=".5"
+                android:text="Name"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvRelationshipHeader"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight=".5"
+                android:text="Relationship to Child"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Parent/Guardian"
-            android:id="@+id/tvCustomerHeader"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Relationship to Child"
-            android:id="@+id/tvRelationshipHeader"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Father"
-            android:id="@+id/tvRelationship"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Name"
-            android:id="@+id/tvCustoemrNameHeading"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Perez, Jonathan"
             android:id="@+id/tvCustomerName"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight=".5"
+            android:text="Perez, Jonathan"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvRelationship"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Cell Phone"
+            android:gravity="center"
+            android:layout_weight=".5"
+            android:text="Father"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <TextView
             android:id="@+id/tvCustomerCellPhoneHeading"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight=".5"
+            android:text="Cell Phone"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="(305) 794-5170"
-            android:id="@+id/tvCustomerCell"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
+            android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Email"
             android:id="@+id/tvCustomerEmailHeading"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight=".5"
+            android:text="Email"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="jonathan.perez@me.com"
+            android:id="@+id/tvCustomerCell"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight=".5"
+            android:text="(305) 794-5170"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+        <TextView
             android:id="@+id/tvCustomerEmail"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight=".5"
+            android:text="jonathan.perez@me.com"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
-        <!--<TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Address"
-            android:id="@+id/tvCustomerAddressHeading"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="5013 Cool Fountain Lane \nCentreville, VA 20120"
-            android:id="@+id/tvCustomerAddress"
-            android:padding="5dp"
-            android:layout_marginLeft="16dp"
-            android:layout_gravity="center_vertical"/>-->
     </LinearLayout>
 </android.support.v7.widget.CardView>

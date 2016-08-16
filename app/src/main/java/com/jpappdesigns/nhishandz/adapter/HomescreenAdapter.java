@@ -8,13 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jpappdesigns.nhishandz.ItemClickListener;
 import com.jpappdesigns.nhishandz.MainActivity;
 import com.jpappdesigns.nhishandz.MonthlyReportsActivity;
 import com.jpappdesigns.nhishandz.MyViewHolder;
 import com.jpappdesigns.nhishandz.R;
+import com.jpappdesigns.nhishandz.SessionActivity;
 import com.jpappdesigns.nhishandz.fragments.ChildListFragment;
 import com.jpappdesigns.nhishandz.fragments.CustomerListFragment;
 import com.jpappdesigns.nhishandz.model.HomescreeenInformation;
@@ -68,9 +68,10 @@ public class HomescreenAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     ft.addToBackStack(null);
                     ft.commit();
                 } else if (position == 2) {
-                    Toast.makeText(mContext, "Position " + position, Toast.LENGTH_SHORT).show();
+
                 } else if (position == 3) {
-                    Toast.makeText(mContext, "Position  " + position, Toast.LENGTH_SHORT).show();
+                    Intent session = new Intent(mContext, SessionActivity.class);
+                    mContext.startActivity(session);
                 } else if (position == 4) {
                     Intent reportsActivity = new Intent(mContext, MonthlyReportsActivity.class);
                     mContext.startActivity(reportsActivity);

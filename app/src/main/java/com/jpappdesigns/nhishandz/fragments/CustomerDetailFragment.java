@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jpappdesigns.nhishandz.Constants;
-import com.jpappdesigns.nhishandz.GetChildOfParentBackgroundWorker;
 import com.jpappdesigns.nhishandz.GetSingleCustomerBackgroundWorker;
 import com.jpappdesigns.nhishandz.R;
 
@@ -37,7 +36,6 @@ public class CustomerDetailFragment extends Fragment {
         initView(view);
 
         getCustomerData(customerId, TAG);
-        //getChildOfCustomerData(customerId);
         return view;
     }
 
@@ -55,9 +53,4 @@ public class CustomerDetailFragment extends Fragment {
 
     }
 
-    private void getChildOfCustomerData(String customerId) {
-
-        GetChildOfParentBackgroundWorker getChildOfParentBackgroundWorker = new GetChildOfParentBackgroundWorker(getActivity(), Constants.RETRIVE_CHILD_OF_PARENT, mRecyclerView, customerId);
-        getChildOfParentBackgroundWorker.execute(customerId);
-    }
 }

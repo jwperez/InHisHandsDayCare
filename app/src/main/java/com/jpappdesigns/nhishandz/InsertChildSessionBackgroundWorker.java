@@ -3,10 +3,7 @@ package com.jpappdesigns.nhishandz;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-
-import com.jpappdesigns.nhishandz.utils.Parser;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,20 +20,24 @@ import java.net.URLEncoder;
 /**
  * Created by jonathan.perez on 7/26/16.
  */
-public class GetChildOfParentBackgroundWorker extends AsyncTask<String, Void, String> {
+public class InsertChildSessionBackgroundWorker extends AsyncTask<String, Void, String> {
 
     private static final String TAG = GetSingleCustomerBackgroundWorker.class.getSimpleName();
     private Context mContext;
-    private String mUrlAddress = Constants.RETRIEVE_SINGLE_CUSTOMER;
+    private String mUrlAddress;
     private ProgressDialog mProgressDialog;
-    private RecyclerView mRecyclerView;
-    private String mCustomerId;
+    private String mChildId;
+    private String mDate;
+    private String mTimeIn;
+    private String mTimeOut;
 
-    public GetChildOfParentBackgroundWorker(Context context, String urlAddress, RecyclerView recyclerView, String customerId) {
+    public InsertChildSessionBackgroundWorker(Context context, String urlAddress,  String date, String timeIn, String timeOut, String childId) {
         mContext = context;
         mUrlAddress = urlAddress;
-        mRecyclerView = recyclerView;
-        mCustomerId = customerId;
+        mChildId = childId;
+        mDate = date;
+        mTimeIn = timeIn;
+        mTimeOut = timeOut;
 
     }
 
@@ -44,10 +45,10 @@ public class GetChildOfParentBackgroundWorker extends AsyncTask<String, Void, St
     protected void onPreExecute() {
         super.onPreExecute();
 
-        /*mProgressDialog = new ProgressDialog(mContext);
-        mProgressDialog.setTitle("Downloading Data");
-        mProgressDialog.setMessage("Downloading...Please wait.");
-        mProgressDialog.show();*/
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setTitle("Adding session to database");
+        mProgressDialog.setMessage("Adding...Please wait.");
+        mProgressDialog.show();
     }
 
 
@@ -56,9 +57,8 @@ public class GetChildOfParentBackgroundWorker extends AsyncTask<String, Void, St
 
         String data = null;
 
-        Log.d(TAG, "doInBackground: " + params[0]);
-
-        data = this.downloadSingleCustomerData(mCustomerId);
+        data = this.insertData(mDate, mTimeIn, mTimeOut, mChildId);
+        Log.d(TAG, "doInBackground: " + data);
 
         return data;
     }
@@ -67,21 +67,19 @@ public class GetChildOfParentBackgroundWorker extends AsyncTask<String, Void, St
     protected void onPostExecute(String data) {
         super.onPostExecute(data);
 
-        //mProgressDialog.dismiss();;
+        mProgressDialog.dismiss();
 
-        if (data != null) {
-            Parser parser = new Parser(mContext, data, mRecyclerView, "Child Of Parent");
-            parser.execute();
-        }
+
+
     }
 
-    private String downloadSingleCustomerData(String customerId) {
+    private String insertData(String date, String timeIn, String timeOut, String childId) {
 
         InputStream inputStream = null;
         String line = null;
 
         try {
-            String login_url = Constants.RETRIVE_CHILD_OF_PARENT;
+            String login_url = Constants.INSERT_CHILD_SESSION;
             URL url = new URL(login_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");
@@ -89,8 +87,12 @@ public class GetChildOfParentBackgroundWorker extends AsyncTask<String, Void, St
             httpURLConnection.setDoInput(true);
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("customerId", "UTF-8") + "=" + URLEncoder.encode(customerId, "UTF-8");
+            String post_data = URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8") + "&" +
+                    URLEncoder.encode("timeIn", "UTF-8") + "=" + URLEncoder.encode(timeIn, "UTF-8") + "&" +
+                    URLEncoder.encode("timeOut", "UTF-8") + "=" + URLEncoder.encode(timeOut, "UTF-8") + "&" +
+                    URLEncoder.encode("childId", "UTF-8") + "=" + URLEncoder.encode(childId, "UTF-8");
             bufferedWriter.write(post_data);
+            Log.d(TAG, "insertData: " + post_data);
             bufferedWriter.flush();
             bufferedWriter.close();
             outputStream.close();

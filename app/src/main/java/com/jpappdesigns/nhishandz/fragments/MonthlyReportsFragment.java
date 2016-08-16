@@ -2,6 +2,7 @@ package com.jpappdesigns.nhishandz.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class MonthlyReportsFragment extends Fragment {
     private SimpleDateFormat mDateFormatter;
     private String mChildId;
     private String mCustomerId;
+    private LinearLayout mReportsStarter;
 
     private Spinner mChildrenSpinner;
 
@@ -59,6 +62,7 @@ public class MonthlyReportsFragment extends Fragment {
         mStartDate = (EditText) view.findViewById(R.id.etStartDate);
         mEndDate = (EditText) view.findViewById(R.id.etEndDate);
         mGenerateBill = (Button) view.findViewById(R.id.btGenerateBill);
+        mReportsStarter = (LinearLayout) view.findViewById(R.id.llReportStarter);
 
         mStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +134,11 @@ public class MonthlyReportsFragment extends Fragment {
         mGenerateBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                mReportsStarter.setBackgroundColor(Color.parseColor("#6dafdc"));
+                mGenerateBill.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mGenerateBill.setText("Bill Generated.  See Below.");
+                mGenerateBill.setTextColor(Color.parseColor("#FFC107"));
 
                 Fragment fragment;
                 fragment = new MonthlyReportsPrintoutFragment();

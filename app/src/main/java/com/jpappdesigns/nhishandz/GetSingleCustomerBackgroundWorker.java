@@ -31,7 +31,7 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
     private static final String TAG = GetSingleCustomerBackgroundWorker.class.getSimpleName();
     private Context mContext;
     private String mUrlAddress = Constants.RETRIEVE_SINGLE_CUSTOMER;
-    private String mChildOfCustomer = Constants.RETRIVE_CHILD_OF_PARENT;
+    private String mChildOfCustomer = Constants.RETRIEVE_CHILD_OF_PARENT;
     private ProgressDialog mProgressDialog;
     private RecyclerView mRecyclerView;
     private String mCustomerId;
@@ -213,7 +213,7 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
         String line = null;
 
         try {
-            String login_url = Constants.RETRIVE_CHILD_OF_PARENT;
+            String login_url = Constants.RETRIEVE_CHILD_OF_PARENT;
             URL url = new URL(login_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("GET");

@@ -98,6 +98,9 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
         } else if (mFragmentName.equals("MonthlyReportsFragment")) {
             Parser parser = new Parser(mContext, data, mChildrenSpinner, "MonthlyReportsFragment");
             parser.execute();
+        } else if (mFragmentName.equals("RecordSessionFragment")) {
+            Parser parser = new Parser(mContext, data, mChildrenSpinner, "RecordSessionFragment");
+            parser.execute();
         } else {
             Toast.makeText(mContext, "Unable to download customer data", Toast.LENGTH_SHORT).show();
         }

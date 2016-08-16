@@ -114,6 +114,8 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
             this.parseForSingleCustomer();
             this.parseChildSessions();
             return this.parseChildById();
+        } else if (mParsingFor.equals("RecordSessionFragment")) {
+            return this.parseChildren();
         }
 
         return null;
@@ -172,22 +174,45 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 Log.d(TAG, "onPostExecute: " + customerId[i]);
 
             }
-            // Creating adapter for spinner
-            //ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(mContext,
-              //      android.R.layout.simple_spinner_item, labels);
 
             SpinnerAdapter spinnerAdapter = new SpinnerAdapter(mContext, labels, childId, customerId);
 
-
-            // Drop down layout style - list view with radio button
             spinnerAdapter
                     .setDropDownViewResource(R.layout.spinner_item);
 
-            // attaching data adapter to spinner
             mChildrenSpinner.setAdapter(spinnerAdapter);
-        }  else if (mParsingFor.equals("MonthlyReportsPrintoutFragment")) {
+        } else if (mParsingFor.equals("MonthlyReportsPrintoutFragment")) {
             mReportsAdapter = new ReportsAdapter(mContext, customers, child, mChildSessionModels);
             mRecyclerView.setAdapter(mReportsAdapter);
+        } else if (mParsingFor.equals("RecordSessionFragment")) {
+            String[] labels = new String[child.size()];
+            String[] childId = new String[child.size()];
+            String[] customerId = new String[child.size()];
+
+            for (int i = 0; i < child.size(); i++) {
+
+                StringBuilder buf = new StringBuilder();
+                buf.append(child.get(i).getLastName());
+                buf.append(", " + child.get(i).getFirstName());
+                if (!"".equals(child.get(i).getMiddleName())) {
+                    buf.append(" ");
+                    buf.append(child.get(i).getMiddleName());
+                } else {
+                }
+
+                labels[i] =buf.toString();
+                childId[i] = child.get(i).getId();
+                customerId[i] = child.get(i).getCustomerId();
+                Log.d(TAG, "onPostExecute: " + customerId[i]);
+
+            }
+
+            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(mContext, labels, childId, customerId);
+
+            spinnerAdapter
+                    .setDropDownViewResource(R.layout.spinner_item);
+
+            mChildrenSpinner.setAdapter(spinnerAdapter);
         }
     }
 
