@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:id="@+id/linLayout"
@@ -19,9 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Update Customer in Database"
+            android:text="Update Child in Database"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         <android.support.design.widget.TextInputLayout
@@ -36,7 +35,7 @@
                 android:id="@+id/etLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Customer Last Name"
+                android:hint="Child Last Name"
                 android:inputType="textPersonName"
                 />
 
@@ -54,7 +53,7 @@
                 android:id="@+id/etFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Customer First Name"
+                android:hint="Child First Name"
                 android:inputType="textPersonName"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -71,7 +70,7 @@
                 android:id="@+id/etMiddleName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Customer Middle Name"
+                android:hint="Child Middle Name"
                 android:inputType="textPersonName"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -79,66 +78,36 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp">
 
             <EditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etDOB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Customer Email"
-                android:inputType="textEmailAddress"/>
+                android:editable="false"
+                android:hint="Child DOB"
+                android:inputType="none"/>
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <Spinner
+            android:id="@+id/spCustomer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp">
-
-            <EditText
-                android:id="@+id/etPhoneNumber"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Customer Phone Number"
-                android:inputType="phone"/>
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp">
-
-            <EditText
-                android:id="@+id/etRelationship"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Customer's Relationship to Child"
-                android:inputType="textPersonName"/>
-
-        </android.support.design.widget.TextInputLayout>
+            android:layout_marginTop="4dp"/>
 
         <Button
-            android:id="@+id/btnUpdateCustomer"
+            android:id="@+id/btnUpdateChild"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
-            android:padding="16dp"
-            android:text="Update Customer"
-            android:textColor="@color/white"/>
+            android:padding="4dp"
+            android:text="Update Child"/>
 
     </LinearLayout>
 </ScrollView>
-

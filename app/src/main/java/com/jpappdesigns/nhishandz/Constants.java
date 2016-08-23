@@ -5,7 +5,7 @@ public class Constants {
     // Hourly cost
     public static final double HOURLY_COST = 3.75;
 
-    public static final String IP_ADDRESS = "192.168.2.6";
+    public static final String IP_ADDRESS = "192.168.2.3";
 
     public static final String IS_LOGGED_IN = "isLoggedIn";
     public static final String LOGIN_OPERATION = "login";
@@ -26,6 +26,7 @@ public class Constants {
     public static final String RETRIEVE_SINGLE_SESSION = "http://" + IP_ADDRESS + "/nHisHandz/get_single_session.php";
     public static final String UPDATE_SESSION = "http://" + IP_ADDRESS + "/nHisHandz/update_session.php";
     public static final String UPDATE_CUSTOMER = "http://" + IP_ADDRESS + "/nHisHandz/update_customer.php";
+    public static final String UPDATE_CHILD = "http://" + IP_ADDRESS + "/nHisHandz/update_child.php";
     public static final String GET_EVENTS = "http://" + IP_ADDRESS + "/nHisHandz/get_events.php";
 
     public static final int CHILD_INFO = 0;
