@@ -2,4 +2,6 @@
     <string name="app_name">nHisHandz</string>
     <string name="n_a">N/A</string>
     <string name="hours">hours</string>
+    <string name="transition_string">hello</string>
+    <string name="only_customers_already_in_the_database_will_show_in_drop_down_if_you_havenlt_already_added_the_custoner_then_please_do_so_first_by_clicking_on_the_button">Only customers already in the database will show in drop down. If you haven\'t already added the customer, then please do so first by clicking on the \"ADD Customer\" button.</string>
 </resources>

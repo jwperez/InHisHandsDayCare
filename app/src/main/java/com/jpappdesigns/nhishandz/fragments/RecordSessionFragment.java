@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
@@ -16,6 +17,7 @@ import android.widget.TimePicker;
 
 import com.jpappdesigns.nhishandz.Constants;
 import com.jpappdesigns.nhishandz.CustomerDownloader;
+import com.jpappdesigns.nhishandz.InsertChildSessionBackgroundWorker;
 import com.jpappdesigns.nhishandz.R;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +36,7 @@ public class RecordSessionFragment extends Fragment {
     private TextView mTimeIn;
     private TextView mTimeOut;
     int hour,minute,second;
+    private String mChildId;
     private Button mSaveToDatabase;
     final SimpleDateFormat timeFormatter = new SimpleDateFormat("hh:mm:ss", Locale.US);
     private String mDisplayTime;
@@ -102,6 +105,33 @@ public class RecordSessionFragment extends Fragment {
                 startTimeDialog();
             }
 
+        });
+
+        mChildrenSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ViewGroup vg = (ViewGroup) view;
+                vg.getChildCount();
+
+                TextView childId = (TextView) vg.getChildAt(1);
+
+                mChildId = childId.getText().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        mSaveToDatabase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                InsertChildSessionBackgroundWorker insertChildSessionBackgroundWorker = new InsertChildSessionBackgroundWorker(getActivity(),
+                        Constants.INSERT_CHILD_SESSION, mDate.getText().toString(), mTimeIn.getText().toString(), mTimeOut.getText().toString(), mChildId);
+                insertChildSessionBackgroundWorker.execute();
+            }
         });
     }
 

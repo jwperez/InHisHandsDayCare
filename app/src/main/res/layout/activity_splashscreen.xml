@@ -1,32 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?><LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                    android:layout_width="fill_parent"
-                                                    android:layout_height="fill_parent"
-                                                    android:background="#0288D1"
-                                                    android:layout_gravity="center"
-                                                    android:id="@+id/linLayout"
-                                                    android:gravity="center"
-                                                    android:orientation="vertical" >
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linLayout"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_gravity="center"
+              android:background="#0288D1"
+              android:gravity="center"
+              android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/splash"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:id="@+id/splash"
-        android:background="@drawable/in_his_hands_logo" />
+        android:background="@drawable/in_his_hands_logo"/>
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text= "His Hands"
-        android:textColor="@color/white"
         android:paddingTop="10dp"
-        android:id="@+id/textView"/>
+        android:text="His Hands"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"/>
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Day Care"
-        android:textColor="@color/white"
-        android:id="@+id/textView1"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"/>
 </LinearLayout>

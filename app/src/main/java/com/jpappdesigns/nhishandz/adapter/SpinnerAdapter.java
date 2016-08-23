@@ -24,8 +24,8 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
     public SpinnerAdapter(Context context, String[] children, String[] childrenId, String[] cusotmerId) {
         super(context, R.layout.spinner_item,children);
         mContext = context;
-        this.mChildren = children;
-        this.mChildrenId = childrenId;
+        mChildren = children;
+        mChildrenId = childrenId;
         mCustomerId = cusotmerId;
     }
 
@@ -46,7 +46,7 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
             convertView = inflater.inflate(R.layout.spinner_item, null);
         }
 
-        TextView childName = (TextView) convertView.findViewById(R.id.tvChildName);
+        TextView childName = (TextView) convertView.findViewById(R.id.tvCustomerName);
         TextView childId = (TextView) convertView.findViewById(R.id.tvChildID);
         TextView customerId = (TextView) convertView.findViewById(R.id.tvCustomerId);
 

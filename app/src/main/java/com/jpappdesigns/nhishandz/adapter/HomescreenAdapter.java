@@ -17,6 +17,7 @@ import com.jpappdesigns.nhishandz.R;
 import com.jpappdesigns.nhishandz.SessionActivity;
 import com.jpappdesigns.nhishandz.fragments.ChildListFragment;
 import com.jpappdesigns.nhishandz.fragments.CustomerListFragment;
+import com.jpappdesigns.nhishandz.fragments.EventsFragment;
 import com.jpappdesigns.nhishandz.model.HomescreeenInformation;
 
 import java.util.ArrayList;
@@ -68,10 +69,14 @@ public class HomescreenAdapter extends RecyclerView.Adapter<MyViewHolder> {
                     ft.addToBackStack(null);
                     ft.commit();
                 } else if (position == 2) {
-
-                } else if (position == 3) {
                     Intent session = new Intent(mContext, SessionActivity.class);
                     mContext.startActivity(session);
+                } else if (position == 3) {
+                    fragment = new EventsFragment();
+                    ft = ((MainActivity) mContext).getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_frame, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
                 } else if (position == 4) {
                     Intent reportsActivity = new Intent(mContext, MonthlyReportsActivity.class);
                     mContext.startActivity(reportsActivity);

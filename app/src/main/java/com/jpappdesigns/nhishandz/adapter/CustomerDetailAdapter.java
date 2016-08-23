@@ -1,6 +1,9 @@
 package com.jpappdesigns.nhishandz.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jpappdesigns.nhishandz.Constants;
+import com.jpappdesigns.nhishandz.ItemClickListener;
+import com.jpappdesigns.nhishandz.MainActivity;
 import com.jpappdesigns.nhishandz.R;
+import com.jpappdesigns.nhishandz.fragments.UpdateCustomerFragment;
 import com.jpappdesigns.nhishandz.model.ChildModel;
 import com.jpappdesigns.nhishandz.model.CustomerModel;
 
@@ -25,6 +31,7 @@ public class CustomerDetailAdapter extends RecyclerView.Adapter<CustomerDetailAd
     private Context mContext;
     private List<CustomerModel> mCustomer;
     private List<ChildModel> mChild;
+    private FragmentTransaction ft;
 
     public CustomerDetailAdapter(Context context, List<CustomerModel> customer, List<ChildModel> child) {
         mContext = context;
@@ -62,7 +69,7 @@ public class CustomerDetailAdapter extends RecyclerView.Adapter<CustomerDetailAd
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         Calendar calender = Calendar.getInstance();
         Log.d(TAG, "onBindViewHolder: " + calender.get(Calendar.WEEK_OF_YEAR));
@@ -83,6 +90,29 @@ public class CustomerDetailAdapter extends RecyclerView.Adapter<CustomerDetailAd
             }
             customerInfoHolder.mName.setText(buf.toString());
 
+            customerInfoHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+
+                    Fragment fragment = new UpdateCustomerFragment();
+                    Bundle args = new Bundle();
+                    args.putString("CustomerId", mCustomer.get(position).getId());
+                    args.putString("CustomerLastName", mCustomer.get(position).getLastName());
+                    args.putString("CustomerFirstName", mCustomer.get(position).getFirstName());
+                    args.putString("CustomerMiddleName", mCustomer.get(position).getMiddleName());
+                    args.putString("CustomerEmail", mCustomer.get(position).getEmail());
+                    args.putString("CustomerPhoneNumber", mCustomer.get(position).getPhoneNumber());
+                    args.putString("CustomerRelationship", mCustomer.get(position).getRelationshipToChild());
+                    fragment.setArguments(args);
+                    ft = ((MainActivity) mContext).getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment_frame, fragment);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    return true;
+                }
+            });
+
+
         } else {
             ChildInfoHolder childInfoHolder = (ChildInfoHolder) holder;
             childInfoHolder.mChildDob.setText(mChild.get(position - 1).getDob());
@@ -102,6 +132,7 @@ public class CustomerDetailAdapter extends RecyclerView.Adapter<CustomerDetailAd
 
     }
 
+
     @Override
     public int getItemCount() {
         return mCustomer.size() + mChild.size();
@@ -113,12 +144,14 @@ public class CustomerDetailAdapter extends RecyclerView.Adapter<CustomerDetailAd
         }
     }
 
-    public class CustomerInfoHolder extends ViewHolder {
+    public class CustomerInfoHolder extends ViewHolder implements View.OnLongClickListener {
 
         TextView mRelationship;
         TextView mName;
         TextView mPhoneNumber;
         TextView mEmail;
+        View.OnLongClickListener mOnLongClickListener;
+        ItemClickListener mItemClickListener;
 
         public CustomerInfoHolder(View itemView) {
             super(itemView);
@@ -127,6 +160,18 @@ public class CustomerDetailAdapter extends RecyclerView.Adapter<CustomerDetailAd
             mName = (TextView) itemView.findViewById(R.id.tvCustomerName);
             mPhoneNumber = (TextView) itemView.findViewById(R.id.tvCustomerCell);
             mEmail = (TextView) itemView.findViewById(R.id.tvCustomerEmail);
+
+            itemView.setOnLongClickListener(this);
+        }
+
+        public void setOnLongClickListener(View.OnLongClickListener onLongClickListener) {
+            mOnLongClickListener = onLongClickListener;
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            mOnLongClickListener.onLongClick(itemView);
+            return true;
         }
     }
 
@@ -138,7 +183,7 @@ public class CustomerDetailAdapter extends RecyclerView.Adapter<CustomerDetailAd
         public ChildInfoHolder(View itemView) {
             super(itemView);
 
-            mChildName = (TextView) itemView.findViewById(R.id.tvChildName);
+            mChildName = (TextView) itemView.findViewById(R.id.tvCustomerName);
             mChildDob = (TextView) itemView.findViewById(R.id.tvChildDob);
         }
     }

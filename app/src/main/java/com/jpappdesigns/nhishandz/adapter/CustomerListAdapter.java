@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.jpappdesigns.nhishandz.ItemClickListener;
 import com.jpappdesigns.nhishandz.MainActivity;
@@ -45,7 +43,7 @@ public class CustomerListAdapter extends RecyclerView.Adapter<MyHolder> {
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
 
-        Log.d(TAG, "onBindViewHolder: " +customers);
+        //Log.d(TAG, "onBindViewHolder: " +customers);
         //Log.d(TAG, "onBindViewHolder: " + customers.sort();
         StringBuilder buf = new StringBuilder();
         buf.append(customers.get(position).getLastName());
@@ -61,7 +59,6 @@ public class CustomerListAdapter extends RecyclerView.Adapter<MyHolder> {
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(mContext, customers.get(position).getLastName(), Toast.LENGTH_SHORT).show();
 
                 Fragment fragment = new CustomerDetailFragment();
                 Bundle args = new Bundle();

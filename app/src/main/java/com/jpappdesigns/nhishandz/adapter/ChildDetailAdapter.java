@@ -257,7 +257,7 @@ public class ChildDetailAdapter extends RecyclerView.Adapter<ChildDetailAdapter.
         public ChildInfoHolder(View itemView) {
             super(itemView);
 
-            mChildName = (TextView) itemView.findViewById(R.id.tvChildName);
+            mChildName = (TextView) itemView.findViewById(R.id.tvCustomerName);
             mChildDob = (TextView) itemView.findViewById(R.id.tvChildDob);
         }
     }

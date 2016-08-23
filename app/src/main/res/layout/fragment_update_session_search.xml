@@ -16,7 +16,7 @@
 
     <Spinner
         android:id="@+id/spChildren"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"/>
 
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search dtatbase"
-        android:id="@+id/button2"
+        android:id="@+id/btnSearchDatabase"
         android:background="@color/colorPrimary"
         android:padding="8dp"/>
 
@@ -108,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update database"
-        android:id="@+id/button"
+        android:id="@+id/btnUpdateDatabase"
         android:background="@color/colorPrimary"
         android:padding="8dp"/>
 

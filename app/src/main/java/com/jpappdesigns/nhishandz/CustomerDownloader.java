@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.jpappdesigns.nhishandz.utils.Parser;
 
@@ -30,6 +29,7 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
     private ProgressDialog mProgressDialog;
     private RecyclerView mRecyclerView;
     private Spinner mChildrenSpinner;
+    private Spinner mCustomerSpinner;
     private String mFragmentName;
 
     public CustomerDownloader(Context context, String urlAddress, RecyclerView recyclerView, String fragmentName) {
@@ -46,6 +46,13 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
         mFragmentName = fragmentName;
     }
 
+    public CustomerDownloader(Context context, String urlAddress, Spinner spinner) {
+        mContext = context;
+        mUrlAddress = urlAddress;
+        mCustomerSpinner = spinner;
+        mFragmentName = "AddChildFragment";
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -53,7 +60,7 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setTitle("Downloading Data");
         mProgressDialog.setMessage("Downloading...Please wait.");
-        mProgressDialog.show();
+        //mProgressDialog.show();
     }
 
     @Override
@@ -65,8 +72,11 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
 
         if (mFragmentName.equals("CustomerListFragment")) {
             data = this.downloadCustomers();
-        } else {
+        } else if (mFragmentName.equals("ChildListFragment") || mFragmentName.equals("RecordSessionFragment")
+                || mFragmentName.equals("UpdateSessionFragment") || mFragmentName.equals("MonthlyReportsFragment")) {
             data = this.downloadChildren();
+        } else {
+            data = this.downloadCustomers();
         }
 
         return data;
@@ -89,9 +99,7 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
         if (data != null && mFragmentName.equals("CustomerListFragment")) {
             Parser parser = new Parser(mContext, data, mRecyclerView, "All Customers");
             parser.execute();
-        }
-
-        if (mFragmentName.equals("ChildListFragment")) {
+        } else if (mFragmentName.equals("ChildListFragment")) {
             //Log.d(TAG, "onPostExecute: inside ChildListFragment" + data);
             Parser parser = new Parser(mContext, data, mRecyclerView, "All Children");
             parser.execute();
@@ -101,9 +109,15 @@ public class CustomerDownloader extends AsyncTask<Void, Integer, String> {
         } else if (mFragmentName.equals("RecordSessionFragment")) {
             Parser parser = new Parser(mContext, data, mChildrenSpinner, "RecordSessionFragment");
             parser.execute();
+        } else if (mFragmentName.contains("UpdateSessionFragment")) {
+            Parser parser = new Parser(mContext, data, mChildrenSpinner, "UpdateSessionFragment");
+            parser.execute();
         } else {
-            Toast.makeText(mContext, "Unable to download customer data", Toast.LENGTH_SHORT).show();
+            Parser parser = new Parser(mContext, data, mCustomerSpinner, "AddChildFragment", "extra");
+            parser.execute();
         }
+
+
     }
 
     private String downloadCustomers() {

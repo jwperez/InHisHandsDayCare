@@ -32,7 +32,7 @@ public class CustomerDetailFragment extends Fragment {
         customerId = bundle.getString("customerId");
         Log.d(TAG, "onCreateView: " + customerId);
 
-        View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_child_detail, container, false);
         initView(view);
 
         getCustomerData(customerId, TAG);

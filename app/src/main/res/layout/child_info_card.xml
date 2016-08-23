@@ -4,6 +4,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
+                                    android:layout_margin="5dp"
                                     card_view:cardCornerRadius="8dp"
                                     card_view:cardElevation="4dp">
 
@@ -49,7 +50,7 @@
         android:weightSum="1">
 
         <TextView
-            android:id="@+id/tvChildName"
+            android:id="@+id/tvCustomerName"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"

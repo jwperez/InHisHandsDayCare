@@ -348,7 +348,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
                         childSessionHolder.mChildSessionsTable.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
 
                     }
-            }
+                }
             } else if (holder.getItemViewType() == Constants.BILL_TOTAL) {
 
                 BillTotalInfoHolder billTotalInfoHolder = (BillTotalInfoHolder) holder;
@@ -372,7 +372,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
 
                 billTotalInfoHolder.mTotalHours.setText("" + totalHours);
 
-                billTotalInfoHolder.mTotal.setText("$"+ (totalHours * Constants.HOURLY_COST));
+                billTotalInfoHolder.mTotal.setText("$" + (totalHours * Constants.HOURLY_COST));
             }
         }
     }
@@ -396,7 +396,7 @@ public class ReportsAdapter extends RecyclerView.Adapter<ReportsAdapter.ViewHold
         public ChildInfoHolder(View itemView) {
             super(itemView);
 
-            mChildName = (TextView) itemView.findViewById(R.id.tvChildName);
+            mChildName = (TextView) itemView.findViewById(R.id.tvCustomerName);
             mChildDob = (TextView) itemView.findViewById(R.id.tvChildDob);
         }
     }

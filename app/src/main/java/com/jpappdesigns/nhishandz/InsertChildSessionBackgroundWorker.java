@@ -69,8 +69,6 @@ public class InsertChildSessionBackgroundWorker extends AsyncTask<String, Void, 
 
         mProgressDialog.dismiss();
 
-
-
     }
 
     private String insertData(String date, String timeIn, String timeOut, String childId) {

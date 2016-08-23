@@ -21,6 +21,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
         mIcon = (ImageView) itemView.findViewById(R.id.ivIcon);
 
         itemView.setOnClickListener(this);
+
+
     }
 
     public TextView getmDescription() {
@@ -47,4 +49,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClic
     public void onClick(View view) {
         mItemClickListener.onItemClick(getLayoutPosition());
     }
+
+
 }

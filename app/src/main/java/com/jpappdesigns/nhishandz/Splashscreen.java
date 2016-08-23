@@ -29,7 +29,7 @@ public class Splashscreen extends Activity {
     }
 
     private void startAnimations() {
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.translate);
         animation.reset();
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linLayout);
         linearLayout.clearAnimation();

@@ -13,11 +13,14 @@ import com.jpappdesigns.nhishandz.adapter.ChildDetailAdapter;
 import com.jpappdesigns.nhishandz.adapter.ChildListAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerDetailAdapter;
 import com.jpappdesigns.nhishandz.adapter.CustomerListAdapter;
+import com.jpappdesigns.nhishandz.adapter.CustomerSpinnerAdapter;
+import com.jpappdesigns.nhishandz.adapter.EventsAdapter;
 import com.jpappdesigns.nhishandz.adapter.ReportsAdapter;
 import com.jpappdesigns.nhishandz.adapter.SpinnerAdapter;
 import com.jpappdesigns.nhishandz.model.ChildModel;
 import com.jpappdesigns.nhishandz.model.ChildSessionModel;
 import com.jpappdesigns.nhishandz.model.CustomerModel;
+import com.jpappdesigns.nhishandz.model.EventsModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,16 +41,26 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
     private ProgressDialog mProgressDialog;
     private ArrayList<CustomerModel> customers = new ArrayList<>();
     private ArrayList<ChildModel> child = new ArrayList<>();
+    private ArrayList<EventsModel> event = new ArrayList<>();
     private ArrayList<ChildSessionModel> mChildSessionModels= new ArrayList<>();
     private RecyclerView mRecyclerView;
     private Spinner mChildrenSpinner;
+    private Spinner mCustomerSpinner;
     CustomerListAdapter mCustomerListAdapter;
     ChildDetailAdapter mChildDetailAdapter;
     ChildListAdapter mChildListAdapter;
     CustomerDetailAdapter mCustomerDetailAdapter;
     ReportsAdapter mReportsAdapter;
+    private EventsAdapter mEventsAdapter;
+    private String mExtra;
 
     private String mParsingFor;
+
+    public Parser(Context context, String data, String parsingFor) {
+        mContext = context;
+        this.data3 = data;
+        mParsingFor = parsingFor;
+    }
 
     public Parser(Context context, String data, RecyclerView recyclerView, String parsingFor) {
         mContext = context;
@@ -57,10 +70,23 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
     }
 
     public Parser(Context context, String data, Spinner spinner, String parsingFor) {
+        Log.d(TAG, "Parser: no extra");
         mContext = context;
         this.data = data;
+        Log.d(TAG, "Parser: no extra data " + data);
         mChildrenSpinner = spinner;
         mParsingFor = parsingFor;
+    }
+
+    public Parser(Context context, String data, Spinner spinner, String parsingFor, String extra) {
+        Log.d(TAG, "Parser: with extra");
+        mContext = context;
+        this.data = data;
+        Log.d(TAG, "Parser: with extra data " + data);
+        mCustomerSpinner = spinner;
+        Log.d(TAG, "Parser: " + mChildrenSpinner);
+        mParsingFor = parsingFor;
+        mExtra = extra;
     }
 
     public Parser(Context context, String data, String data2, RecyclerView recyclerView, String parsingFor) {
@@ -76,9 +102,6 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
         this.data = data;
         this.data2 = data2;
         this.data3 = data3;
-        Log.d(TAG, "Parser: " + data);
-        Log.d(TAG, "Parser: " + data2);
-        Log.d(TAG, "Parser: " + data3);
         mRecyclerView = recyclerView;
         mParsingFor = parsingFor;
     }
@@ -96,7 +119,7 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
     @Override
     protected Integer doInBackground(Void... voids) {
 
-        //Log.d(TAG, "doInBackground: " + mParsingFor);
+        Log.d(TAG, "doInBackground: " + mParsingFor);
         if (mParsingFor.equals("All Customers")) {
             return this.parse();
         } else if (mParsingFor.equals("All Children")) {
@@ -116,6 +139,14 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
             return this.parseChildById();
         } else if (mParsingFor.equals("RecordSessionFragment")) {
             return this.parseChildren();
+        } else if (mParsingFor.equals("UpdateSessionFragment")) {
+            return this.parseChildren();
+        } else if (mParsingFor.equals("Child Session")) {
+            return this.parseChildSessions();
+        } else if (mParsingFor.equals("Events")) {
+            return this.parseEvents();
+        } else if (mParsingFor.equals("AddChildFragment")) {
+            return this.parse();
         }
 
         return null;
@@ -127,7 +158,7 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
 
         mProgressDialog.dismiss();
 
-        //Log.d(TAG, "onPostExecute: " +mParsingFor);
+        Log.d(TAG, "onPostExecute: " +mParsingFor);
 
         if (mParsingFor.equals("Single Customer")) {
             if (integer == 1) {
@@ -144,7 +175,6 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 Toast.makeText(mContext, "Unable to parse customer data.", Toast.LENGTH_LONG).show();
             }
         } else if (mParsingFor.equals("All Children")) {
-            Log.d(TAG, "onPostExecute: " + integer);
             if (integer == 1) {
                 mChildListAdapter = new ChildListAdapter(mContext, child);
                 mRecyclerView.setAdapter(mChildListAdapter);
@@ -213,6 +243,69 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                     .setDropDownViewResource(R.layout.spinner_item);
 
             mChildrenSpinner.setAdapter(spinnerAdapter);
+        } else if (mParsingFor.equals("UpdateSessionFragment")) {
+            String[] labels = new String[child.size()];
+            String[] childId = new String[child.size()];
+            String[] customerId = new String[child.size()];
+
+            for (int i = 0; i < child.size(); i++) {
+
+                StringBuilder buf = new StringBuilder();
+                buf.append(child.get(i).getLastName());
+                buf.append(", " + child.get(i).getFirstName());
+                if (!"".equals(child.get(i).getMiddleName())) {
+                    buf.append(" ");
+                    buf.append(child.get(i).getMiddleName());
+                } else {
+                }
+
+                labels[i] =buf.toString();
+                childId[i] = child.get(i).getId();
+                customerId[i] = child.get(i).getCustomerId();
+                Log.d(TAG, "onPostExecute: " + customerId[i]);
+
+            }
+
+            SpinnerAdapter spinnerAdapter = new SpinnerAdapter(mContext, labels, childId, customerId);
+
+            spinnerAdapter
+                    .setDropDownViewResource(R.layout.spinner_item);
+
+            mChildrenSpinner.setAdapter(spinnerAdapter);
+        } else if (mParsingFor.equals("Events")) {
+            if (integer == 1) {
+                mEventsAdapter = new EventsAdapter(mContext, event);
+                mRecyclerView.setAdapter(mEventsAdapter);
+            }
+        } else if (mParsingFor.equals("AddChildFragment")) {
+            if (integer == 1) {
+                String[] labels = new String[customers.size()];
+                String[] customerId = new String[customers.size()];
+
+                for (int i = 0; i < customers.size(); i++) {
+
+                    StringBuilder buf = new StringBuilder();
+                    buf.append(customers.get(i).getLastName());
+                    buf.append(", " + customers.get(i).getFirstName());
+                    if (!"".equals(customers.get(i).getMiddleName())) {
+                        buf.append(" ");
+                        buf.append(customers.get(i).getMiddleName());
+                    } else {
+                    }
+
+                    labels[i] =buf.toString();
+                    customerId[i] = customers.get(i).getId();
+                    Log.d(TAG, "onPostExecute: " + customerId[i]);
+
+                }
+
+                CustomerSpinnerAdapter spinnerAdapter = new CustomerSpinnerAdapter(mContext, labels, customerId);
+
+                spinnerAdapter
+                        .setDropDownViewResource(R.layout.spinner_customer_item);
+
+                mCustomerSpinner.setAdapter(spinnerAdapter);
+            }
         }
     }
 
@@ -297,6 +390,31 @@ public class Parser extends AsyncTask<Void, Integer, Integer> {
                 childModel.setDob(c.getString("dob"));
                 childModel.setCustomerId(c.getString("customerId"));
                 child.add(childModel);
+            }
+            return 1;
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    private int parseEvents() {
+
+        try {
+            JSONArray events = null;
+            JSONObject jsonObject = new JSONObject(data);
+            events = jsonObject.getJSONArray("events");
+
+            event.clear();
+
+            for (int i = 0; i < events.length(); i++) {
+                JSONObject c = events.getJSONObject(i);
+                EventsModel eventsModel = new EventsModel();
+                eventsModel.setEventsId(c.getString("eventId"));
+                eventsModel.setEventsName(c.getString("eventName"));
+                eventsModel.setEventDate(c.getString("eventDate"));
+                event.add(eventsModel);
             }
             return 1;
 

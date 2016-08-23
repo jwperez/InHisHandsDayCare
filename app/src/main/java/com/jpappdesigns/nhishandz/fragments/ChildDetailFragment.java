@@ -35,7 +35,7 @@ public class ChildDetailFragment extends Fragment {
         mCustomerId = bundle.getString("customerId");
         mChildId = bundle.getString("childId");
 
-        View view = inflater.inflate(R.layout.fragment_customer_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_child_detail, container, false);
         initView(view);
 
         mCurrentDate = getCurrentDateTime();
@@ -57,7 +57,7 @@ public class ChildDetailFragment extends Fragment {
 
         Calendar calander = Calendar.getInstance();
         //SimpleDateFormat sdf = calander.DATE;
-        calander.add(Calendar.DAY_OF_YEAR, -7);
+        //calander.add(Calendar.DAY_OF_YEAR, -7);
 
         return calander;
 

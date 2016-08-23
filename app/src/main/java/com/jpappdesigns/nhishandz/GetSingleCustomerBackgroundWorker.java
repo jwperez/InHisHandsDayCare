@@ -127,14 +127,18 @@ public class GetSingleCustomerBackgroundWorker extends AsyncTask<String, Void, G
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
+            Log.d(TAG, "doInBackground: current" + format.format(mCurrentDate.getTime()));
             String[] days = new String[5];
-            int delta = mCurrentDate.get(GregorianCalendar.DAY_OF_WEEK) + 3; //add 2 if your week start on monday
+            int delta = -mCurrentDate.get(GregorianCalendar.DAY_OF_WEEK) + 2; //add 2 if your week start on monday
             mCurrentDate.add(Calendar.DAY_OF_MONTH, delta);
             for (int i = 0; i < 5; i++) {
+
                 days[i] = format.format(mCurrentDate.getTime());
                 mCurrentDate.add(Calendar.DAY_OF_MONTH, 1);
             }
 
+            Log.d(TAG, "doInBackground: " + days[0]);
+            Log.d(TAG, "doInBackground: " + days[4]);
             customerData = this.downloadSingleCustomerData(mCustomerId);
             childOfCustomerData = this.downloadChildById(mChildId);
             childSessionsData = this.childSessions(mChildId, days[0], days[4]);
